@@ -184,4 +184,7 @@ yq e -i ".jobs.terraform.env.ORG_ID = \"${_arg_organization_id}\"" ../.github/wo
 echo "Setting project ID Github prepare-deploy workflow."
 yq e -i ".jobs.terraform.env.PROJECT_ID = \"${_arg_project_id}\"" ../.github/workflows/prepare-deploy.yaml
 
+echo "Setting project ID Github prepare-deploy workflow."
+yq e -i ".jobs.terraform.env.BILLING_ACCOUNT_ID = \"${billing_account_id}\"" ../.github/workflows/prepare-deploy.yaml
+
 # ] <-- needed because of Argbash
