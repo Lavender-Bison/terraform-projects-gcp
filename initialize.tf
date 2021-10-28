@@ -12,6 +12,6 @@ terraform {
 }
 
 provider "google" {
-  project = var.seed_project_id
+  project = var.project_id
   region  = "us-central1"
 }
