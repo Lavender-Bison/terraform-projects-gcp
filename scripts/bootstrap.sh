@@ -179,6 +179,7 @@ echo "Setting bucket on the Github repository."
 gh secret set -R $_arg_github_repository TF_BUCKET -b "${project_number}-tfstate"
 
 echo "Setting project ID on the Github repository."
-gh secret set -R $_arg_github_repository PROJECT_ID -b $_arg_project_id
+echo $_arg_project_id
+gh secret set -R $_arg_github_repository PROJECT_ID -b "$_arg_project_id"
 
 # ] <-- needed because of Argbash
