@@ -175,16 +175,20 @@ gcloud iam service-accounts keys create ../projects-terraform-workspace-key.json
 echo "Setting key on the Github repository."
 base64 -in ../projects-terraform-workspace-key.json | gh secret set -R $_arg_github_repository SA_KEY
 
-echo "Setting bucket in the Github prepare-deploy workflow."
-yq e -i ".jobs.terraform.env.TF_BUCKET = \"${project_number}-tfstate\"" ../.github/workflows/prepare-deploy.yaml
+echo "Setting environment variables in the Github prepare-deploy workflow."
+yq e -i "
+    .jobs.terraform.env.TF_BUCKET = \"${project_number}-tfstate\" |
+    .jobs.terraform.env.ORG_ID = \"${_arg_organization_id}\" | 
+    .jobs.terraform.env.PROJECT_ID = \"${_arg_project_id}\" |
+    .jobs.terraform.env.BILLING_ACCOUNT_ID = \"${billing_account_id}\"
+" ../.github/workflows/prepare-deploy.yaml
 
-echo "Setting organization ID Github prepare-deploy workflow."
-yq e -i ".jobs.terraform.env.ORG_ID = \"${_arg_organization_id}\"" ../.github/workflows/prepare-deploy.yaml
-
-echo "Setting project ID Github prepare-deploy workflow."
-yq e -i ".jobs.terraform.env.PROJECT_ID = \"${_arg_project_id}\"" ../.github/workflows/prepare-deploy.yaml
-
-echo "Setting project ID Github prepare-deploy workflow."
-yq e -i ".jobs.terraform.env.BILLING_ACCOUNT_ID = \"${billing_account_id}\"" ../.github/workflows/prepare-deploy.yaml
+echo "Setting environment variables in the Github deploy-terraform workflow."
+yq e -i "
+    .jobs.terraform.env.TF_BUCKET = \"${project_number}-tfstate\" |
+    .jobs.terraform.env.ORG_ID = \"${_arg_organization_id}\" | 
+    .jobs.terraform.env.PROJECT_ID = \"${_arg_project_id}\" |
+    .jobs.terraform.env.BILLING_ACCOUNT_ID = \"${billing_account_id}\"
+" ../.github/workflows/deploy-terraform.yaml
 
 # ] <-- needed because of Argbash
