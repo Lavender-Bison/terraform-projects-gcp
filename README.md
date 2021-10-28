@@ -4,6 +4,26 @@ organization.
 
 ## Overview
 
+Managing many Google Cloud Platform projects and Terraform workspaces is an
+extremely difficult and time consuming process--even for the most mature
+organizations. Terraform Cloud and Terraform Enterprise are a great solution,
+but in most cases you're still in charge of setting up the workspaces. If
+you're using the VCS-based process, you're even setting up the link to a Github
+repository.
+
+This repository serves to simplify the process of project creation and
+provisioning by elevating all higher-privileged access to a single Terraform
+workspace. Through the use of custom built modules, developers within the
+organization can easily set up a complete project environment for their use
+case in no time at all.
+
+This Terraform workspace utilizes a GCS backend rather than Terraform Cloud or
+Terraform Enterprise. There's not a real significant reason this is the case.
+Mostly, the Terraform Cloud workspace would be configured as a locally run
+backend anyways. A simple GCS backend works just as well, and is likely less
+expensive.
+
+
 ## Creating New Projects
 
 
@@ -42,6 +62,7 @@ You'll need the following command line tools.
 
 * [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 * [Github CLI](https://cli.github.com/manual/installation)
+* [yq](https://mikefarah.gitbook.io/yq/#install)
 
 Once the Google Cloud SDK is installed, you'll also need the beta components.
 

@@ -103,6 +103,11 @@ if ! which gh &>/dev/null; then
     exit -1
 fi
 
+if ! which yq &>/dev/null; then
+    echo "The 'yq' command must be installed to use this script."
+    exit -1
+fi
+
 # Check if the bootstrap project already exists. Create it if it doesn't exist.
 echo "Checking if the specified bootstrap project already exists."
 
