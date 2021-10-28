@@ -1,4 +1,4 @@
-variable "tf_bucket" {
-  type        = string
-  description = "The Google Cloud Storage bucket for the Terraform state for this workspace."
+variable "project_id" {
+  type = string
+  description = "The project ID for this Terraform workspace."
 }
