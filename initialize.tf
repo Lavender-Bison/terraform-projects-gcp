@@ -24,7 +24,6 @@ provider "google" {
 }
 
 provider "github" {
-  alias = "lavender-bison"
   token = var.gh_pat
   owner = "Lavender-Bison"
 }
