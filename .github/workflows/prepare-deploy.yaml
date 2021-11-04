@@ -31,7 +31,7 @@ jobs:
         run: terraform validate -no-color
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var "org_id=${{ env.ORG_ID }}" -var "project_id=${{ env.PROJECT_ID }}" -var "billing_account_id=${{ env.BILLING_ACCOUNT_ID }}"
+        run: terraform plan -no-color -var "gh_pat=${{ secrets.GH_PAT }}" -var "org_id=${{ env.ORG_ID }}" -var "project_id=${{ env.PROJECT_ID }}" -var "billing_account_id=${{ env.BILLING_ACCOUNT_ID }}"
         continue-on-error: true
       - name: Update Pull Request
         uses: actions/github-script@0.9.0

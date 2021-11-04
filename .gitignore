@@ -30,3 +30,6 @@ override.tf.json
 
 # No service account keys.
 *-key.json
+
+# No local Terraform variables.
+*.auto.tfvars

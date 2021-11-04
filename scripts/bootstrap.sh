@@ -168,7 +168,16 @@ echo "Granting the Terraform workspace service account projects-terraform-worksp
 gsutil iam ch serviceAccount:projects-terraform-workspace@${_arg_project_id}.iam.gserviceaccount.com:objectAdmin gs://${project_number}-tfstate >/dev/null
 
 echo "Granting other organization level roles to the Terraform workspace service account."
-for ROLE in "roles/resourcemanager.projectCreator" "roles/resourcemanager.projectDeleter" "roles/resourcemanager.organizationAdmin" "roles/billing.admin"; do
+for ROLE in "roles/resourcemanager.projectCreator" \
+    "roles/resourcemanager.projectDeleter" \
+    "roles/resourcemanager.organizationAdmin" \
+    "roles/iam.organizationRoleAdmin" \
+    "roles/billing.admin" \
+    "roles/resourcemanager.folderCreator" \
+    "roles/serviceusage.serviceUsageAdmin" \
+    "roles/resourcemanager.projectIamAdmin" \
+    "roles/iam.serviceAccountKeyAdmin" \
+    "roles/iam.serviceAccountAdmin"; do
     echo "Enabling $ROLE for the Terraform workspace service account at the organization level."
     gcloud organizations add-iam-policy-binding $_arg_organization_id \
         --member="serviceAccount:projects-terraform-workspace@${_arg_project_id}.iam.gserviceaccount.com" \
