@@ -36,6 +36,7 @@ module "project_factory" {
 # Service Account for Terraform to run as.
 resource "google_service_account" "tf_service_account" {
   account_id   = "tf-state"
+  project      = module.project_factory.project_id
   display_name = "Terraform Service Account"
   description  = "The Terraform Google Cloud Platform Service Account for project ${local.project_name}."
 }
