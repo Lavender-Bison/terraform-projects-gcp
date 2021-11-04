@@ -1,6 +1,4 @@
-resource "github_repository" "example" {
-  name        = var.repo_name
-  description = "My awesome codebase"
-
+resource "github_repository" "github_repository" {
+  name       = var.repo_name
   visibility = "private"
 }

@@ -19,7 +19,8 @@ module "example_project_dev" {
   ]
   project_labels = {
   }
-  billing_budget = "200"
+  billing_budget          = "200"
+  state_bucket_project_id = var.project_id
 }
 
 module "example_project_qa" {
@@ -36,7 +37,8 @@ module "example_project_qa" {
   ]
   project_labels = {
   }
-  billing_budget = "200"
+  billing_budget          = "200"
+  state_bucket_project_id = var.project_id
 }
 
 module "example_project_prod" {
@@ -53,6 +55,7 @@ module "example_project_prod" {
   ]
   project_labels = {
   }
-  billing_budget = "200"
+  billing_budget          = "200"
+  state_bucket_project_id = var.project_id
 }
 

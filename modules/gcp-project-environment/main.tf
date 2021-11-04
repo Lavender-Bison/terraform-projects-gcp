@@ -32,3 +32,47 @@ module "project_factory" {
   labels                  = merge(local.default_labels, var.project_labels)
   activate_apis           = local.activate_apis
 }
+
+# Service Account for Terraform to run as.
+resource "google_service_account" "tf_service_account" {
+  account_id   = "tf-state"
+  display_name = "Terraform Service Account"
+  description  = "The Terraform Google Cloud Platform Service Account for project ${local.project_name}."
+}
+
+# This requires the terraform to be run regularly.
+resource "time_rotating" "tf_service_account_key_rotation" {
+  rotation_days = 30
+}
+
+resource "google_service_account_key" "tf_service_account_key" {
+  service_account_id = google_service_account.tf_service_account.name
+
+  keepers = {
+    rotation_time = time_rotating.tf_service_account_key_rotation.rotation_rfc3339
+  }
+}
+
+resource "github_actions_secret" "example_secret" {
+  repository      = var.repo_name
+  secret_name     = "SA_KEY"
+  encrypted_value = google_service_account_key.tf_service_account_key.private_key
+}
+
+# Bucket for Terraform state.
+resource "google_storage_bucket" "tf_state_bucket" {
+  name                        = "${module.project_factory.project_number}-tfstate"
+  project                     = var.state_bucket_project_id
+  location                    = "US"
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+}
+
+resource "google_storage_bucket_iam_member" "tf_service_account_iam_member" {
+  bucket = google_storage_bucket.tf_state_bucket.name
+  role   = "roles/storage.admin"
+  member = "serviceAccount:${google_service_account.tf_service_account.email}"
+}

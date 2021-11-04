@@ -42,3 +42,8 @@ variable "project_labels" {
   type        = map(string)
   description = "Additional labels to add to the Google Cloud Platform project."
 }
+
+variable "state_bucket_project_id" {
+  type        = string
+  description = "The ID of the project to place the state bucket."
+}
