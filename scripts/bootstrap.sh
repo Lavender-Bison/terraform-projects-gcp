@@ -177,7 +177,8 @@ for ROLE in "roles/resourcemanager.projectCreator" \
     "roles/serviceusage.serviceUsageAdmin" \
     "roles/resourcemanager.projectIamAdmin" \
     "roles/iam.serviceAccountKeyAdmin" \
-    "roles/iam.serviceAccountAdmin"; do
+    "roles/iam.serviceAccountAdmin" \
+    "roles/storage.admin"; do
     echo "Enabling $ROLE for the Terraform workspace service account at the organization level."
     gcloud organizations add-iam-policy-binding $_arg_organization_id \
         --member="serviceAccount:projects-terraform-workspace@${_arg_project_id}.iam.gserviceaccount.com" \
