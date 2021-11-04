@@ -1,3 +1,8 @@
+variable "gh_pat" {
+  type        = string
+  description = "The personal access token for performing Github operations."
+}
+
 variable "org_id" {
   type        = string
   description = "The organization ID for this Terraform workspace."
