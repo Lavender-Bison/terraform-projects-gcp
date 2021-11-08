@@ -56,14 +56,14 @@ resource "google_service_account_key" "tf_service_account_key" {
 
 resource "github_actions_secret" "example_secret" {
   repository      = var.repo_name
-  secret_name     = "SA_KEY"
+  secret_name     = "SA_KEY_${upper(var.app_env)}"
   encrypted_value = google_service_account_key.tf_service_account_key.private_key
 }
 
 # Bucket for Terraform state.
 resource "google_storage_bucket" "tf_state_bucket" {
   name                        = "${module.project_factory.project_number}-tfstate"
-  project                     = var.state_bucket_project_id
+  project                     = module.project_factory.project_id
   location                    = "US"
   uniform_bucket_level_access = true
 
