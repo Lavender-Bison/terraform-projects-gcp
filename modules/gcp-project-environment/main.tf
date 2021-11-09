@@ -54,10 +54,10 @@ resource "google_service_account_key" "tf_service_account_key" {
   }
 }
 
-resource "github_actions_secret" "tf_service_account_key_secret" {
+resource "github_actions_secret" "sa_key" {
   repository      = var.repo_name
   secret_name     = "SA_KEY_${upper(var.app_env)}"
-  encrypted_value = google_service_account_key.tf_service_account_key.private_key
+  plaintext_value = google_service_account_key.tf_service_account_key.private_key
 }
 
 # Bucket for Terraform state.
@@ -72,8 +72,8 @@ resource "google_storage_bucket" "tf_state_bucket" {
   }
 }
 
-resource "google_storage_bucket_iam_member" "tf_service_account_iam_member" {
-  bucket = google_storage_bucket.tf_state_bucket.name
-  role   = "roles/storage.admin"
-  member = "serviceAccount:${google_service_account.tf_service_account.email}"
+resource "google_project_iam_member" "tf_sa_editor" {
+  project = module.project_factory.project_id
+  role    = "roles/editor"
+  member  = "serviceAccount:${google_service_account.tf_service_account.email}"
 }

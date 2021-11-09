@@ -23,3 +23,9 @@ module "network_project_prod" {
   state_bucket_project_id = var.project_id
 }
 
+// This project and service account get special org-level privileges because of shared
+resource "google_organization_iam_member" "network_project_prod_xpn" {
+  org_id = var.org_id
+  role   = "roles/compute.xpnAdmin"
+  member = "serviceAccount:${module.network_project_prod.service_account}"
+}
