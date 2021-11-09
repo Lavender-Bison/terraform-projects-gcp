@@ -54,7 +54,7 @@ resource "google_service_account_key" "tf_service_account_key" {
   }
 }
 
-resource "github_actions_secret" "example_secret" {
+resource "github_actions_secret" "tf_service_account_key_secret" {
   repository      = var.repo_name
   secret_name     = "SA_KEY_${upper(var.app_env)}"
   encrypted_value = google_service_account_key.tf_service_account_key.private_key
