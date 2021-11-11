@@ -34,30 +34,30 @@ module "project_factory" {
 }
 
 # Service Account for Terraform to run as.
-resource "google_service_account" "tf_service_account" {
-  account_id   = "tf-state"
+resource "google_service_account" "build_service_account" {
+  account_id   = "github-workflow"
   project      = module.project_factory.project_id
-  display_name = "Terraform Service Account"
-  description  = "The Terraform Google Cloud Platform Service Account for project ${local.project_name}."
+  display_name = "Build Service Account"
+  description  = "The Github Workflow Google Cloud Platform Service Account for project ${local.project_name}."
 }
 
 # This requires the terraform to be run regularly.
-resource "time_rotating" "tf_service_account_key_rotation" {
+resource "time_rotating" "build_service_account_key_rotation" {
   rotation_days = 30
 }
 
-resource "google_service_account_key" "tf_service_account_key" {
-  service_account_id = google_service_account.tf_service_account.name
+resource "google_service_account_key" "build_service_account_key" {
+  service_account_id = google_service_account.build_service_account.name
 
   keepers = {
-    rotation_time = time_rotating.tf_service_account_key_rotation.rotation_rfc3339
+    rotation_time = time_rotating.build_service_account_key_rotation.rotation_rfc3339
   }
 }
 
 resource "github_actions_secret" "sa_key" {
   repository      = var.repo_name
-  secret_name     = "SA_KEY_${upper(var.app_env)}"
-  plaintext_value = google_service_account_key.tf_service_account_key.private_key
+  secret_name     = "BUILD_KEY_${upper(var.app_env)}"
+  plaintext_value = google_service_account_key.build_service_account_key.private_key
 }
 
 # Bucket for Terraform state.
@@ -72,8 +72,8 @@ resource "google_storage_bucket" "tf_state_bucket" {
   }
 }
 
-resource "google_project_iam_member" "tf_sa_editor" {
+resource "google_project_iam_member" "build_sa_editor" {
   project = module.project_factory.project_id
   role    = "roles/editor"
-  member  = "serviceAccount:${google_service_account.tf_service_account.email}"
+  member  = "serviceAccount:${google_service_account.build_service_account.email}"
 }

@@ -29,5 +29,5 @@ module "network_project_prod" {
 resource "google_organization_iam_member" "network_project_prod_xpn" {
   org_id = var.org_id
   role   = "roles/compute.xpnAdmin"
-  member = "serviceAccount:${module.network_project_prod.service_account}"
+  member = "serviceAccount:${module.network_project_prod.build_service_account_email}"
 }
