@@ -35,7 +35,7 @@ module "project_factory" {
 
 # Service Account for Terraform to run as.
 resource "google_service_account" "build_service_account" {
-  account_id   = "build"
+  account_id   = "github-workflow"
   project      = module.project_factory.project_id
   display_name = "Build Service Account"
   description  = "The Github Workflow Google Cloud Platform Service Account for project ${local.project_name}."
