@@ -5,6 +5,8 @@ module "network_project_repo" {
   repo_name = "network-project"
 }
 
+
+# Technically it's prod but the network project will be "environmentless."
 module "network_project_prod" {
   source = "./modules/gcp-project-environment"
 
