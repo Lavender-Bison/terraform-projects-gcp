@@ -17,7 +17,8 @@ module "network_project_prod" {
   folder_id          = google_folder.prod.id
   billing_account_id = var.billing_account_id
   activate_apis = [
-    "compute.googleapis.com"
+    "compute.googleapis.com",
+    "dns.googleapis.com"
   ]
   project_labels = {
   }
