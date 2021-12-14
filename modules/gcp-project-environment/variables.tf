@@ -47,3 +47,9 @@ variable "state_bucket_project_id" {
   type        = string
   description = "The ID of the project to place the state bucket."
 }
+
+variable "enable_docker_repository" {
+  type        = bool
+  description = "Enable the Google Artifact registry and create a simple repository."
+  default     = false
+}

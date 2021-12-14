@@ -77,3 +77,24 @@ resource "google_project_iam_member" "build_sa_editor" {
   role    = "roles/editor"
   member  = "serviceAccount:${google_service_account.build_service_account.email}"
 }
+
+resource "google_project_service" "artifact_registry_api" {
+  count = var.enable_docker_repository ? 1 : 0
+
+  project = module.project_factory.project_id
+  service = "artifactregistry.googleapis.com"
+}
+
+resource "google_artifact_registry_repository" "artifact_registry_docker_repository" {
+  provider = google-beta
+  count    = var.enable_docker_repository ? 1 : 0
+
+  project       = module.project_factory.project_id
+  location      = "us-central1"
+  repository_id = "general"
+  description   = "General repository for Docker images for the ${local.project_name} project."
+  format        = "DOCKER"
+  depends_on = [
+    google_project_service.artifact_registry_api
+  ]
+}
